@@ -12,7 +12,6 @@
 - Put it in the `[esx]` directory.
 
 ## Installation
-- Database will automatically update on load, adding `state` to table `owned vehicles`
 - Add this in your server.cfg :
 
 ```
