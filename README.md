@@ -1,4 +1,5 @@
-# JAM_Garage (Based off https://github.com/DanFrmSpace/esx_eden_garage)
+# JAM_Garage 
+* Based off https://github.com/DanFrmSpace/esx_eden_garage
 
 ### Requirements
 * [EssentialMode](https://github.com/kanersps/essentialmode/releases)
@@ -11,7 +12,7 @@
 - Put it in the `[esx]` directory.
 
 ## Installation
-- Database will automatically update on load, adding `state` to table `owned vehicles`. (*To be updated*)
+- Database will automatically update on load, adding `state` to table `owned vehicles`
 - Add this in your server.cfg :
 
 ```
