@@ -1,7 +1,7 @@
 JAM_Garage = {
 	Config = {	
 		MarkerDrawDistance = 100,
-		VehicleDespawnDistance = 50,
+		VehicleDespawnDistance = 300,
 
 		Blips = {
 			CityGarage = {
