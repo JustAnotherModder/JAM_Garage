@@ -15,7 +15,7 @@ If you have not done so already, you must follow the guide at https://docs.fivem
 
 ### Manually
 - Download https://github.com/bh-hub/blanchisseur/archive/master.zip
-- Put it in the `[esx]` directory.
+- Put it in the `resources` directory inside of your server folder.
 
 ## Installation
 - Add this in your server.cfg :
