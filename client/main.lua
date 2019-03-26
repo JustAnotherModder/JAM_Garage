@@ -302,15 +302,12 @@ end
 -------------------------------------------
 
 function JAM_Garage:LoginCheck()
-    print("LoginCheckA")
     if not ESX then return; end
 
     ESX.TriggerServerCallback('JAM_Garage:GetVehicles', function(vehicles)
-        print("LoginCheckC")
         for key,val in pairs(vehicles) do
             if val.state == 0 or val.state == nil then  
-                print("ChangeState")
-                TriggerServerEvent('JAM_Garage:ChangeState', val.plate, 2)
+                TriggerServerEvent('JAM_Garage:ChangeState', val.plate, 1)
             end      
         end        
     end)
@@ -337,7 +334,7 @@ function JAM_Garage:VehicleCheck()
                     end
 
                     DeleteVehicle(val.vehicle)                    
-                    TriggerServerEvent('JAM_Garage:ChangeState', vehicleProps.plate, 2);
+                    TriggerServerEvent('JAM_Garage:ChangeState', vehicleProps.plate, 1);
                 end
             end, vehicleProps)
         end
