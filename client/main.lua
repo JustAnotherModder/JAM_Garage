@@ -167,15 +167,15 @@ function JAM_Garage:OpenVehicleList(zone)
             local vehicleName = GetDisplayNameFromVehicleModel(hashVehicle)
             local labelvehicle
 
-            if val.state == 1 then
-                labelvehicle = vehiclePlate .. " : " .. vehicleName .. " : Garage"            
-            elseif val.state == 2 then
-                labelvehicle = vehiclePlate .. " : " .. vehicleName .. " : Impound"      
-            else                
-                labelvehicle = vehiclePlate .. " : " .. vehicleName .. " : Unknown"      
-            end 
+            if zone == 'Garage' and val.state == 1 then
+                labelvehicle = vehiclePlate .. " : " .. vehicleName .. " : Garage" 
+            elseif zone == 'Impound' and val.state == 2 then
+                labelvehicle = vehiclePlate .. " : " .. vehicleName .. " : Impound"
+            end
 
-            table.insert(elements, {label =labelvehicle , value = val})            
+            if labelvehicle then
+                table.insert(elements, {label =labelvehicle , value = val})  
+            end                      
         end
 
         self.ESX.UI.Menu.Open(
@@ -188,21 +188,13 @@ function JAM_Garage:OpenVehicleList(zone)
 
         function(data, menu)
             if zone == 'Garage' then
-                if data.current.value.state == 1 then
-                    menu.close()
-                    JAM_Garage:SpawnVehicle(data.current.value.vehicle)
-                else
-                    TriggerEvent('esx:showNotification', 'Your vehicle is not in the garage.')
-                end
+                menu.close()
+                JAM_Garage:SpawnVehicle(data.current.value.vehicle) 
             end
 
             if zone == 'Impound' then
-                if data.current.value.state == 2 then
-                    menu.close()
-                    JAM_Garage:SpawnVehicle(data.current.value.vehicle)
-                else
-                    TriggerEvent('esx:showNotification', 'Your vehicle is not impounded.')
-                end
+                menu.close()
+                JAM_Garage:SpawnVehicle(data.current.value.vehicle) 
             end
         end,
 
@@ -232,8 +224,6 @@ function JAM_Garage:SpawnVehicle(vehicle)
         },self.CurrentGarage.Heading, function(callback_vehicle)
         self.ESX.Game.SetVehicleProperties(callback_vehicle, vehicle)
         SetVehRadioStation(callback_vehicle, "OFF")
-        SetVehicleHasBeenOwnedByPlayer(callback_vehicle, true)
-        SetEntityAsMissionEntity(callback_vehicle, true, true)
         TaskWarpPedIntoVehicle(GetPlayerPed(-1), callback_vehicle, -1)
         table.insert(self.DrivenVehicles, {vehicle = callback_vehicle})
         local vehicleProps = self.ESX.Game.GetVehicleProperties(callback_vehicle)
@@ -351,15 +341,14 @@ end
 
 function JAM_Garage:Update()
     TriggerEvent('esx:getSharedObject', function(...) self:GetSharedObject(...); end);
-
     Citizen.Wait(100)
 
     TriggerServerEvent('JAM_Garage:Startup')
-
     Citizen.Wait(100)
 
     self.tick = 0
     self.DrivenVehicles = {}
+
     self:UpdateBlips()     
     self:LoginCheck()
 

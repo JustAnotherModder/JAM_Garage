@@ -1,7 +1,7 @@
 JAM_Garage = {
 	Config = {	
 		MarkerDrawDistance = 100,
-		VehicleDespawnDistance = 300,
+		VehicleDespawnDistance = 50,
 
 		Blips = {
 			CityGarage = {
@@ -19,6 +19,46 @@ JAM_Garage = {
 				Display = 4,
 				Color = 47,
 				Pos = { x = 491.90, y = -1315.00, z = 29.25 },
+			},
+			PaletoGarage = {
+				Zone = "Garage",
+				Sprite = 50,
+				Scale = 1.0,
+				Display = 4,
+				Color = 68,
+				Pos = { x = 105.35, y = 6613.58, z = 31.39 },
+			},			
+			PaletoImpound = {
+				Zone = "Impound",
+				Sprite = 67,
+				Scale = 1.0,
+				Display = 4,
+				Color = 47,
+				Pos = { x = -458.17, y = 6024.81, z = 31.40 },
+			},			
+			VehicleShopGarage = {
+				Zone = "Garage",
+				Sprite = 50,
+				Scale = 1.0,
+				Display = 4,
+				Color = 68,
+				Pos = { x = -63.56, y = -1166.48, z = 31.95 },
+			},	
+			SandyShoresGarage = {
+				Zone = "Garage",
+				Sprite = 50,
+				Scale = 1.0,
+				Display = 4,
+				Color = 68,
+				Pos = { x = 1764.65, y = 3342.33, z = 45.00 },
+			},
+			SandyShoresImpound = {
+				Zone = "Impound",
+				Sprite = 67,
+				Scale = 1.0,
+				Display = 4,
+				Color = 47,
+				Pos = { x = 1736.71, y = 3689.35, z = 35.90 },
 			},
 		},
 
@@ -38,6 +78,46 @@ JAM_Garage = {
 				Scale = { x = 3.0, y = 3.0, z = 1.0 },
 				Color = { r = 255, g = 165, b = 0 },
 				Pos = { x = 480.60, y = -1317.64, z = 28.25 },
+			},
+			PaletoGarage = {
+				Zone = "Garage",
+				Type = 1,
+				Heading = 160.00,
+				Scale = { x = 3.0, y = 3.0, z = 1.0 },
+				Color = { r = 43, g = 187, b = 255 },
+				Pos = { x = 128.78, y = 6622.99, z = 30.77 },
+			},			
+			PaletoImpound = {
+				Zone = "Impound",
+				Type = 1,
+				Heading = 310.00,
+				Scale = { x = 3.0, y = 3.0, z = 1.0 },
+				Color = { r = 255, g = 165, b = 0 },
+				Pos = { x = -471.30, y = 6018.74, z = 30.30 },
+			},
+			VehicleShopGarage = {
+				Zone = "Garage",
+				Type = 1,
+				Heading = 94.00,
+				Scale = { x = 3.0, y = 3.0, z = 1.0 },
+				Color = { r = 43, g = 187, b = 255 },
+				Pos = { x = -63.56, y = -1166.48, z = 24.95 },
+			},	
+			SandyShoresGarage = {
+				Zone = "Garage",
+				Type = 1,
+				Heading = 120.00,
+				Scale = { x = 3.0, y = 3.0, z = 1.0 },
+				Color = { r = 43, g = 187, b = 255 },
+				Pos = { x = 1764.65, y = 3342.33, z = 40.00 },
+			},
+			SandyShoresImpound = {
+				Zone = "Impound",
+				Type = 1,
+				Heading = 300.00,
+				Scale = { x = 3.0, y = 3.0, z = 1.0 },
+				Color = { r = 255, g = 165, b = 0 },
+				Pos = { x = 1736.71, y = 3689.35, z = 33.31 },
 			},
 		},
 
