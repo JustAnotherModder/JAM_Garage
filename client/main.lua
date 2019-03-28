@@ -323,7 +323,7 @@ function JAM_Garage:VehicleCheck()
                         if ped and ped ~= 0 then TaskLeaveVehicle(ped,vehicle,16); end
                     end
 
-                    DeleteVehicle(val.vehicle)                    
+                    ESX.Game.DeleteVehicle(val.vehicle)                    
                     TriggerServerEvent('JAM_Garage:ChangeState', vehicleProps.plate, 1);
                 end
             end, vehicleProps)
