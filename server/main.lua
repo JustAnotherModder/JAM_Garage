@@ -60,10 +60,11 @@ end)
 function JAM_Garage.Startup()
 	local data = MySQL.Sync.fetchAll("SELECT * FROM owned_vehicles")
 	for key,val in pairs(data) do
-	  	if not val.state
-	  	then
+	  	if not val.state then
 	   		MySQL.Sync.fetchAll("ALTER TABLE `owned_vehicles` ADD `state` int(11) NOT NULL;")
-	  	end
+	  	elseif val.state ~= type(int) then
+	   		MySQL.Sync.fetchAll("ALTER TABLE `owned_vehicles` MODIFY COLUMN `state` int(11) NOT NULL;")
+	   	end
 	  	return
 	end
 end
