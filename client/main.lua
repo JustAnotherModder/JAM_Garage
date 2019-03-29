@@ -167,15 +167,15 @@ function JAM_Garage:OpenVehicleList(zone)
             local vehicleName = GetDisplayNameFromVehicleModel(hashVehicle)
             local labelvehicle
 
-            if zone == 'Garage' and val.state == 1 then
-                labelvehicle = vehiclePlate .. " : " .. vehicleName .. " : Garage" 
-            elseif zone == 'Impound' and val.state == 2 then
-                labelvehicle = vehiclePlate .. " : " .. vehicleName .. " : Impound"
-            end
+            if val.state == 1 then
+                labelvehicle = vehiclePlate .. " : " .. vehicleName .. " : Garage"            
+            elseif val.state == 2 then
+                labelvehicle = vehiclePlate .. " : " .. vehicleName .. " : Impound"      
+            else                
+                labelvehicle = vehiclePlate .. " : " .. vehicleName .. " : Unknown"      
+            end 
 
-            if labelvehicle then
-                table.insert(elements, {label =labelvehicle , value = val})  
-            end                      
+            table.insert(elements, {label =labelvehicle , value = val})            
         end
 
         self.ESX.UI.Menu.Open(
@@ -188,13 +188,21 @@ function JAM_Garage:OpenVehicleList(zone)
 
         function(data, menu)
             if zone == 'Garage' then
-                menu.close()
-                JAM_Garage:SpawnVehicle(data.current.value.vehicle) 
+                if data.current.value.state == 1 then
+                    menu.close()
+                    JAM_Garage:SpawnVehicle(data.current.value.vehicle)
+                else
+                    TriggerEvent('esx:showNotification', 'Your vehicle is not in the garage.')
+                end
             end
 
             if zone == 'Impound' then
-                menu.close()
-                JAM_Garage:SpawnVehicle(data.current.value.vehicle) 
+                if data.current.value.state == 2 then
+                    menu.close()
+                    JAM_Garage:SpawnVehicle(data.current.value.vehicle)
+                else
+                    TriggerEvent('esx:showNotification', 'Your vehicle is not impounded.')
+                end
             end
         end,
 
@@ -224,6 +232,8 @@ function JAM_Garage:SpawnVehicle(vehicle)
         },self.CurrentGarage.Heading, function(callback_vehicle)
         self.ESX.Game.SetVehicleProperties(callback_vehicle, vehicle)
         SetVehRadioStation(callback_vehicle, "OFF")
+        SetVehicleHasBeenOwnedByPlayer(callback_vehicle, true)
+        SetEntityAsMissionEntity(callback_vehicle, true, true)
         TaskWarpPedIntoVehicle(GetPlayerPed(-1), callback_vehicle, -1)
         table.insert(self.DrivenVehicles, {vehicle = callback_vehicle})
         local vehicleProps = self.ESX.Game.GetVehicleProperties(callback_vehicle)
@@ -259,7 +269,7 @@ function JAM_Garage:StoreVehicle(zone)
         if not IsPedInVehicle(GetPlayerPed(), vehicle, false) then
             ESX.TriggerServerCallback('JAM_Garage:StoreVehicle', function(valid)
                 if(valid) then
-                    ESX.Game.DeleteVehicle(vehicle)
+                    DeleteVehicle(vehicle)
                     if zone == 'Impound' then 
                         storage = 2
                     else 
@@ -323,7 +333,7 @@ function JAM_Garage:VehicleCheck()
                         if ped and ped ~= 0 then TaskLeaveVehicle(ped,vehicle,16); end
                     end
 
-                    ESX.Game.DeleteVehicle(val.vehicle)                    
+                    DeleteVehicle(val.vehicle)                    
                     TriggerServerEvent('JAM_Garage:ChangeState', vehicleProps.plate, 1);
                 end
             end, vehicleProps)
@@ -340,12 +350,14 @@ end
 -------------------------------------------
 
 function JAM_Garage:Update()
+    Citizen.Wait(1000)
     TriggerEvent('esx:getSharedObject', function(...) self:GetSharedObject(...); end);
-    Citizen.Wait(100)
 
+    Citizen.Wait(1000)
     TriggerServerEvent('JAM_Garage:Startup')
-    Citizen.Wait(100)
 
+    Citizen.Wait(1000)
+    
     self.tick = 0
     self.DrivenVehicles = {}
 
