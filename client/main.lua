@@ -259,7 +259,7 @@ function JAM_Garage:StoreVehicle(zone)
         if not IsPedInVehicle(GetPlayerPed(), vehicle, false) then
             ESX.TriggerServerCallback('JAM_Garage:StoreVehicle', function(valid)
                 if(valid) then
-                    DeleteVehicle(vehicle)
+                    ESX.Game.DeleteVehicle(vehicle)
                     if zone == 'Impound' then 
                         storage = 2
                     else 
