@@ -60,11 +60,10 @@ end)
 function JAM_Garage.Startup()
 	local data = MySQL.Sync.fetchAll("SELECT * FROM owned_vehicles")
 	for key,val in pairs(data) do
-	  	if not val.state then
-	   		MySQL.Sync.fetchAll("ALTER TABLE `owned_vehicles` ADD `state` int(11) NOT NULL DEFAULT 1;")
-	  	elseif val.state ~= type(int) then
-	   		MySQL.Sync.fetchAll("ALTER TABLE `owned_vehicles` MODIFY COLUMN `state` int(11) NOT NULL DEFAULT 1;")
-	   	elseif val.state == type(int) then	   		
+	  	if val.state == nil then
+	   		MySQL.Sync.fetchAll("ALTER TABLE `owned_vehicles` ADD `state` int(11) NOT NULL DEFAULT 0;")
+	  	elseif type(val.state) ~= "number" then
+	   		MySQL.Sync.fetchAll("ALTER TABLE `owned_vehicles` MODIFY COLUMN `state` int(11) NOT NULL DEFAULT 0;")
 	   	end
 	  	return
 	end
