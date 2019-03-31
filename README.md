@@ -12,8 +12,6 @@ If you havn't already, you need to follow the guide at https://docs.fivem.net/se
 * [esx_vehicleshop](https://github.com/ESX-Org/esx_vehicleshop) (*For now...*)
 
 ## Download & Installation
-
-### Manually
 - Download https://github.com/bh-hub/blanchisseur/archive/master.zip
 - Put it in the `resources` directory inside of your server folder.
 
