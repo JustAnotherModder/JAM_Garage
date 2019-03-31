@@ -121,13 +121,13 @@ function JAM_Garage:OpenGarageMenu(zone)
     self.ESX.UI.Menu.CloseAll()
 
     local elements = {}
-    table.insert(elements,{label = "List Vehicles: " .. zone:sub(1,1):upper() .. zone:sub(2), value = zone .. "_List"})
-    table.insert(elements,{label = "Store Vehicle: " .. zone:sub(1,1):upper() .. zone:sub(2), value = zone .. "_Vehicle"})
+    table.insert(elements,{label = "List Vehicles: " .. zone, value = zone .. "_List"})
+    table.insert(elements,{label = "Store Vehicle: " .. zone, value = zone .. "_Vehicle"})
 
     self.ESX.UI.Menu.Open(
         'default', GetCurrentResourceName(), zone .. "_Menu",
         {
-            title = zone:sub(1,1):upper()..zone:sub(2),
+            title = zone,
             align = 'top-left',
             elements = elements,
         },
@@ -144,6 +144,7 @@ function JAM_Garage:OpenGarageMenu(zone)
         end,
         function(data, menu)
             menu.close()
+            self.ActionData.Action = self.CurrentGarage.Zone  
         end
     )
 end
@@ -208,6 +209,7 @@ function JAM_Garage:OpenVehicleList(zone)
 
         function(data, menu)
             menu.close()
+            self:OpenGarageMenu(zone)
         end
     )   
     end)
@@ -282,6 +284,8 @@ function JAM_Garage:StoreVehicle(zone)
                     TriggerEvent('esx:showNotification', "You don't own this vehicle.")
                 end
             end, vehicleProps)
+
+            self.ActionData.Action = self.CurrentGarage.Zone  
             break
         end
 
@@ -333,7 +337,7 @@ function JAM_Garage:VehicleCheck()
                         if ped and ped ~= 0 then TaskLeaveVehicle(ped,vehicle,16); end
                     end
 
-                    DeleteVehicle(val.vehicle)                    
+                    ESX.Game.DeleteVehicle(val.vehicle)                    
                     TriggerServerEvent('JAM_Garage:ChangeState', vehicleProps.plate, 1);
                 end
             end, vehicleProps)
