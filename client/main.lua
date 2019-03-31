@@ -240,6 +240,7 @@ function JAM_Garage:SpawnVehicle(vehicle)
         table.insert(self.DrivenVehicles, {vehicle = callback_vehicle})
         local vehicleProps = self.ESX.Game.GetVehicleProperties(callback_vehicle)
         TriggerServerEvent('JAM_Garage:ChangeState', vehicleProps.plate, 0)
+        self.ActionData.Action = self.CurrentGarage.Zone  
     end) 
 end
 
