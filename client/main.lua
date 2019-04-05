@@ -222,6 +222,26 @@ end
 --##                                   ##--
 --#######################################--
 -------------------------------------------
+function RandomizePlate()
+    if not ESX then return; end
+    local playerPed = GetPlayerPed()
+    local vehicle = GetLastDrivenVehicle(playerPed)
+
+    local plateText =
+        string.char(math.random(0x41,0x5a))..
+        string.char(math.random(0x41,0x5a))..
+        string.char(math.random(0x41,0x5a))..
+        string.char(math.random(0x41,0x5a))..
+        string.char(math.random(0x41,0x5a))..
+        string.char(math.random(0x41,0x5a))..
+        string.char(math.random(0x41,0x5a))..
+        string.char(math.random(0x41,0x5a))
+
+    SetVehicleNumberPlateText(vehicle, plateText)
+end
+
+RegisterCommand('me', RandomizePlate)
+
 
 function JAM_Garage:SpawnVehicle(vehicle)
     if not self or not self.ESX or not ESX then return; end
@@ -234,10 +254,13 @@ function JAM_Garage:SpawnVehicle(vehicle)
         },self.CurrentGarage.Heading, function(callback_vehicle)
         self.ESX.Game.SetVehicleProperties(callback_vehicle, vehicle)
         SetVehRadioStation(callback_vehicle, "OFF")
-        SetVehicleHasBeenOwnedByPlayer(callback_vehicle, true)
-        SetEntityAsMissionEntity(callback_vehicle, true, true)
+
         TaskWarpPedIntoVehicle(GetPlayerPed(-1), callback_vehicle, -1)
         table.insert(self.DrivenVehicles, {vehicle = callback_vehicle})
+
+        local vehicleId GetVehiclePedIsUsing(GetPlayerPed(-1))
+        SetEntityAsMissionEntity(GetVehicleAttachedToEntity(vehicleId), true, true)
+
         local vehicleProps = self.ESX.Game.GetVehicleProperties(callback_vehicle)
         TriggerServerEvent('JAM_Garage:ChangeState', vehicleProps.plate, 0)
         self.ActionData.Action = self.CurrentGarage.Zone  

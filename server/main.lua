@@ -7,7 +7,7 @@ function JAM_Garage:GetPlayerVehicles(identifier)
 	local data = MySQL.Sync.fetchAll("SELECT * FROM owned_vehicles WHERE owner=@identifier",{['@identifier'] = identifier})	
 	for key,val in pairs(data) do
 		local playerVehicle = json.decode(val.vehicle)
-		table.insert(playerVehicles, {owner = val.owner, veh = val.vehicle, vehicle = playerVehicle, plate = val.plate, state = val.state})
+		table.insert(playerVehicles, {owner = val.owner, veh = val.vehicle, vehicle = playerVehicle, plate = val.plate, state = val.jamstate})
 	end
 	return playerVehicles
 end
@@ -51,7 +51,7 @@ AddEventHandler('JAM_Garage:ChangeState', function(plate, state)
 	local vehicles = JAM_Garage:GetPlayerVehicles(xPlayer.getIdentifier())
 	for key,val in pairs(vehicles) do
 		if(plate == val.plate) then
-			MySQL.Sync.execute("UPDATE owned_vehicles SET state =@state WHERE plate=@plate",{['@state'] = state , ['@plate'] = plate})
+			MySQL.Sync.execute("UPDATE owned_vehicles SET jamstate=@state WHERE plate=@plate",{['@state'] = state , ['@plate'] = plate})
 			break
 		end		
 	end
@@ -60,12 +60,10 @@ end)
 function JAM_Garage.Startup()
 	local data = MySQL.Sync.fetchAll("SELECT * FROM owned_vehicles")
 	for key,val in pairs(data) do
-	  	if val.state == nil then
-	   		MySQL.Sync.fetchAll("ALTER TABLE `owned_vehicles` ADD `state` int(11) NOT NULL DEFAULT 0;")
-	  	elseif type(val.state) ~= "number" then
-	   		MySQL.Sync.fetchAll("ALTER TABLE `owned_vehicles` MODIFY COLUMN `state` int(11) NOT NULL DEFAULT 0;")
-	   	end
+	  	if not val.jamstate then
+	   		MySQL.Sync.fetchAll("ALTER TABLE `owned_vehicles` ADD `jamstate` int(11) NOT NULL DEFAULT 0;")
 	  	return
+	  	end
 	end
 end
 
