@@ -63,16 +63,15 @@ function JAM_Garage.Startup()
 	if not next(data) then 
 	   	MySQL.Sync.fetchAll("ALTER TABLE `owned_vehicles` ADD `jamstate` int(11) NOT NULL DEFAULT 0;") 
 	   	return
-	end
-
-	for key,val in pairs(data) do
-	  	if not val.jamstate then
-	   		MySQL.Sync.fetchAll("ALTER TABLE `owned_vehicles` ADD `jamstate` int(11) NOT NULL DEFAULT 0;")
-	  	return
-	  	end
+	else
+		for key,val in pairs(data) do
+		  	if not val.jamstate then
+		   		MySQL.Sync.fetchAll("ALTER TABLE `owned_vehicles` ADD `jamstate` int(11) NOT NULL DEFAULT 0;")
+		  	return
+		  	end
+		end
 	end
 end
-
 
 RegisterNetEvent('JAM_Garage:Startup')
 AddEventHandler('JAM_Garage:Startup', JAM_Garage.Startup)
