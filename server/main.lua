@@ -58,18 +58,20 @@ AddEventHandler('JAM_Garage:ChangeState', function(plate, state)
 end)
 
 function JAM_Garage.Startup()
-	local data = MySQL.Sync.fetchAll("SELECT * FROM owned_vehicles")
+	local dbconfig  =
+	{
+	  	{ ["@dbtable@"] = "owned_vehicles", ["@dbfield@"] = "jamstate", ["@dbfieldconf@"] = "int(11) NOT NULL DEFAULT 0", },
+	}
 
-	if not next(data) then 
-	   	MySQL.Sync.fetchAll("ALTER TABLE `owned_vehicles` ADD `jamstate` int(11) NOT NULL DEFAULT 0;") 
-	   	return
-	else
-		for key,val in pairs(data) do
-		  	if not val.jamstate then
-		   		MySQL.Sync.fetchAll("ALTER TABLE `owned_vehicles` ADD `jamstate` int(11) NOT NULL DEFAULT 0;")
-		  	return
-		  	end
-		end
+	local query1 = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='@dbfield@' and TABLE_NAME='@dbtable@';"
+	local query2 = "ALTER TABLE `@dbtable@` ADD COLUMN `@dbfield@` @dbfieldconf@;"
+
+	for _,c in pairs(dbconfig) do
+		  local curquery1 = query1
+		  local curquery2 = query2
+		  for repThis,repWith in pairs(c) do curquery1 = curquery1:gsub(repThis,repWith); curquery2 = curquery2:gsub(repThis,repWith); end;
+		  local data = MySQL.Sync.fetchAll( curquery1 )
+		  if #data == 0 then  MySQL.Sync.fetchAll( curquery2 );  end;
 	end
 end
 
