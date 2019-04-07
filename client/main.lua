@@ -222,26 +222,6 @@ end
 --##                                   ##--
 --#######################################--
 -------------------------------------------
-function RandomizePlate()
-    if not ESX then return; end
-    local playerPed = GetPlayerPed()
-    local vehicle = GetLastDrivenVehicle(playerPed)
-
-    local plateText =
-        string.char(math.random(0x41,0x5a))..
-        string.char(math.random(0x41,0x5a))..
-        string.char(math.random(0x41,0x5a))..
-        string.char(math.random(0x41,0x5a))..
-        string.char(math.random(0x41,0x5a))..
-        string.char(math.random(0x41,0x5a))..
-        string.char(math.random(0x41,0x5a))..
-        string.char(math.random(0x41,0x5a))
-
-    SetVehicleNumberPlateText(vehicle, plateText)
-end
-
-RegisterCommand('me', RandomizePlate)
-
 
 function JAM_Garage:SpawnVehicle(vehicle)
     if not self or not self.ESX or not ESX then return; end
