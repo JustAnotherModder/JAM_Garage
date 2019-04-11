@@ -6,7 +6,7 @@ function JAM_Garage:GetPlayerVehicles(identifier)
 	local playerVehicles = {}
 	local data = MySQL.Sync.fetchAll("SELECT * FROM owned_vehicles WHERE owner=@identifier",{['@identifier'] = identifier})	
 	for key,val in pairs(data) do
-		if not val.job then
+		if val.job == nil then
 			local playerVehicle = json.decode(val.vehicle)
 			table.insert(playerVehicles, {owner = val.owner, veh = val.vehicle, vehicle = playerVehicle, plate = val.plate, state = val.jamstate})
 		end
@@ -60,11 +60,12 @@ AddEventHandler('JAM_Garage:ChangeState', function(plate, state)
 end)
 
 function JAM_Garage.Startup()
+	print("JAM_Garage.Startup()")
 	local dbconfig  =
 	{
 	  	{ ["@dbtable@"] = "owned_vehicles", ["@dbfield@"] = "jamstate", ["@dbfieldconf@"] = "int(11) NOT NULL DEFAULT 0", },
 	}
-
+--
 	local query1 = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='@dbfield@' and TABLE_NAME='@dbtable@';"
 	local query2 = "ALTER TABLE `@dbtable@` ADD COLUMN `@dbfield@` @dbfieldconf@;"
 

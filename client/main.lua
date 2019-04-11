@@ -26,7 +26,7 @@ function JAM_Garage:UpdateMarkers()
     end
 end
 
-function JAM_Garage:UpdateBlips()
+function JAM_Garage:SetBlips()
     if not self or not self.Config or not self.Config.Blips then return; end
 
     for key,val in pairs(self.Config.Blips) do
@@ -178,7 +178,7 @@ function JAM_Garage:OpenVehicleList(zone)
 
             table.insert(elements, {label =labelvehicle , value = val})            
         end
-
+        self:LoadVehicles(vehicles)
         self.ESX.UI.Menu.Open(
         'default', GetCurrentResourceName(), 'Spawn_Vehicle',
         {
@@ -204,17 +204,35 @@ function JAM_Garage:OpenVehicleList(zone)
                 else
                     TriggerEvent('esx:showNotification', 'Your vehicle is not impounded.')
                 end
-            end
+            end            
+            self:UnloadVehicles(vehicles)
         end,
 
         function(data, menu)
             menu.close()
+            self:UnloadVehicles(vehicles)
             self:OpenGarageMenu(zone)
         end
     )   
     end)
 end
 
+function JAM_Garage:LoadVehicles(vehicles)
+    for k,v in pairs(vehicles) do
+        while not HasModelLoaded(v.vehicle.model) do
+            RequestModel(v.vehicle.model)
+            Citizen.Wait(0)
+        end
+    end
+end
+
+function JAM_Garage:UnloadVehicles(vehicles)
+    for k,v in pairs(vehicles) do
+        if HasModelLoaded(v.vehicle.model) then
+            SetModelAsNoLongerNeeded(v.vehicle.model)
+        end
+    end
+end
 -------------------------------------------
 --#######################################--
 --##                                   ##--
@@ -222,7 +240,6 @@ end
 --##                                   ##--
 --#######################################--
 -------------------------------------------
-
 function JAM_Garage:SpawnVehicle(vehicle)
     if not self or not self.ESX or not ESX then return; end
     self.DrivenVehicles = self.DrivenVehicles or {}
@@ -323,7 +340,7 @@ end
 
 function JAM_Garage:VehicleCheck()    
     if not self or not self.ESX or not ESX then return; end
-
+    self.DrivenVehicles = self.DrivenVehicles or {}
     for key,val in pairs(self.DrivenVehicles) do
         local vehicleProps = self.ESX.Game.GetVehicleProperties(val.vehicle)
         local maxPassengers = GetVehicleMaxNumberOfPassengers(val.vehicle)
@@ -357,34 +374,34 @@ end
 --#######################################--
 -------------------------------------------
 
-function JAM_Garage:Update()
+function JAM_Garage:Start()
+    while not ESX or not self.ESX do        
+        TriggerEvent('esx:getSharedObject', function(...) self:GetSharedObject(...); end);
+        Citizen.Wait(0)
+    end
     Citizen.Wait(1000)
-    TriggerEvent('esx:getSharedObject', function(...) self:GetSharedObject(...); end);
+    TriggerServerEvent('JAM_Garage:Startup')  
+    Citizen.Wait(1000)  
+    self:LoginCheck() 
 
-    Citizen.Wait(1000)
-    TriggerServerEvent('JAM_Garage:Startup')
+    self:SetBlips()   
 
-    Citizen.Wait(1000)
-    
-    self.tick = 0
-    self.DrivenVehicles = {}
+    self:Update() 
+end
 
-    self:UpdateBlips()     
-    self:LoginCheck()
-
-    while true do
+function JAM_Garage:Update()  
+    while true do        
+        self.tick = (self.tick or 0) + 1
         self:UpdateMarkers()
         self:CheckPosition()
         self:CheckInput()
 
-        if self.tick % 1000 == 0 then 
+        if self.tick % 1000 == 1 then 
             self:VehicleCheck()
         end
-
-        self.tick = self.tick + 1
 
         Citizen.Wait(0)
     end
 end
 
-Citizen.CreateThread(function(...) JAM_Garage:Update(...); end)
+Citizen.CreateThread(function(...) JAM_Garage:Start(...); end)
