@@ -23,3 +23,6 @@ If you havn't already, you need to follow the guide at https://docs.fivem.net/se
 ```
 start JAM_Garage
 ```
+
+## Notes
+- Any and all improvements made must be sent back to the author (me).
