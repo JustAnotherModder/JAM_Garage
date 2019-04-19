@@ -15,7 +15,7 @@ If you havn't already, you need to follow the guide at https://docs.fivem.net/se
 
 ### Manually
 - Download https://github.com/JustAnotherModder/JAM_Garage
-- Put it in the `resources/[JAM]` directory inside of your server folder.
+- Go to the `resources` directory inside of your server folder, create a new `[JAM]` folder, place `JAM_Garage` inside.
 
 ## Installation
 - Add this in your server.cfg :
