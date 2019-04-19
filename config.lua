@@ -42,7 +42,7 @@ JAM_Garage = {
 				Scale = 1.0,
 				Display = 4,
 				Color = 68,
-				Pos = { x = -63.56, y = -1166.48, z = 31.95 },
+				Pos = { x = -654.77, y = 310.27, z = 82.97 },
 			},	
 			SandyShoresGarage = {
 				Zone = "Garage",
@@ -101,7 +101,7 @@ JAM_Garage = {
 				Heading = 94.00,
 				Scale = { x = 3.0, y = 3.0, z = 1.0 },
 				Color = { r = 43, g = 187, b = 255 },
-				Pos = { x = -63.56, y = -1166.48, z = 24.95 },
+				Pos = { x = -654.77, y = 310.27, z = 81.97 },
 			},	
 			SandyShoresGarage = {
 				Zone = "Garage",

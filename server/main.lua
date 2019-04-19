@@ -14,6 +14,18 @@ function JAM_Garage:GetPlayerVehicles(identifier)
 	return playerVehicles
 end
 
+function JAM_Garage:GetPlayerVehicles(identifier)	
+	local playerVehicles = {}
+	local data = MySQL.Sync.fetchAll("SELECT * FROM owned_vehicles WHERE owner=@identifier",{['@identifier'] = identifier})	
+	for key,val in pairs(data) do
+		if val.job == nil then
+			local playerVehicle = json.decode(val.vehicle)
+			table.insert(playerVehicles, {owner = val.owner, veh = val.vehicle, vehicle = playerVehicle, plate = val.plate, state = val.jamstate})
+		end
+	end
+	return playerVehicles
+end
+
 ESX.RegisterServerCallback('JAM_Garage:StoreVehicle', function(source, cb, vehicleProps)
 	local isFound = false
 	local xPlayer = ESX.GetPlayerFromId(source)
