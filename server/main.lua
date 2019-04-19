@@ -60,7 +60,6 @@ AddEventHandler('JAM_Garage:ChangeState', function(plate, state)
 end)
 
 function JAM_Garage.Startup()
-	print("JAM_Garage.Startup()")
 	local dbconfig  =
 	{
 	  	{ ["@dbtable@"] = "owned_vehicles", ["@dbfield@"] = "jamstate", ["@dbfieldconf@"] = "int(11) NOT NULL DEFAULT 0", },

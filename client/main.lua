@@ -342,10 +342,16 @@ function JAM_Garage:VehicleCheck()
     if not self or not self.ESX or not ESX then return; end
     self.DrivenVehicles = self.DrivenVehicles or {}
     for key,val in pairs(self.DrivenVehicles) do
+        local canDelete = true
         local vehicleProps = self.ESX.Game.GetVehicleProperties(val.vehicle)
         local maxPassengers = GetVehicleMaxNumberOfPassengers(val.vehicle)
-        local canDelete = true
 
+        for k,v in pairs(val) do 
+            if v == GetLastDrivenVehicle(PlayerPedId(), 0) then 
+                canDelete = false 
+            end 
+        end
+        
         for seat = -1,maxPassengers-1,1 do
             if not IsVehicleSeatFree(val.vehicle, seat) then canDelete = false; end
         end
@@ -393,9 +399,12 @@ function JAM_Garage:Update()
     while true do        
         self.tick = (self.tick or 0) + 1
         self:UpdateMarkers()
-        self:CheckPosition()
         self:CheckInput()
 
+        if self.tick % 100 == 1 then
+            self:CheckPosition()
+        end
+        
         if self.tick % 1000 == 1 then 
             self:VehicleCheck()
         end
