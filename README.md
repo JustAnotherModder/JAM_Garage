@@ -14,8 +14,8 @@ If you havn't already, you need to follow the guide at https://docs.fivem.net/se
 ## Download & Installation
 
 ### Manually
-- Download https://github.com/bh-hub/blanchisseur/archive/master.zip
-- Put it in the `resources` directory inside of your server folder.
+- Download https://github.com/JustAnotherModder/JAM_Garage
+- Put it in the `resources/[JAM]` directory inside of your server folder.
 
 ## Installation
 - Add this in your server.cfg :
