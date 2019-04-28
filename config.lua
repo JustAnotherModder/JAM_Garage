@@ -117,7 +117,7 @@ JAM_Garage = {
 			MedicalTowerGarage = {
 				Zone = "Garage",
 				Type = 1,
-				Heading = 94.00,
+				Heading = 175.00,
 				Scale = { x = 3.0, y = 3.0, z = 1.0 },
 				Color = { r = 43, g = 187, b = 255 },
 				Pos = { x = -654.77, y = 310.27, z = 81.97 },
