@@ -17,8 +17,10 @@ end
 ESX.RegisterServerCallback('JAM_Garage:StoreVehicle', function(source, cb, vehicleProps)
 	local isFound = false
 	local xPlayer = ESX.GetPlayerFromId(source)
-
-	if not xPlayer then return; end
+	while not xPlayer do
+		xPlayer = ESX.GetPlayerFromId(source)
+		Citizen.Wait(0)
+	end
 
 	local playerVehicles = JAM_Garage:GetPlayerVehicles(xPlayer.getIdentifier())
 	local plate = vehicleProps.plate
@@ -36,19 +38,33 @@ end)
 
 ESX.RegisterServerCallback('JAM_Garage:GetVehicles', function(source, cb)
 	local xPlayer = ESX.GetPlayerFromId(source)
-
-	if not xPlayer then return; end
-
+	while not xPlayer do
+		xPlayer = ESX.GetPlayerFromId(source)
+		Citizen.Wait(0)
+	end
 	local vehicles = JAM_Garage:GetPlayerVehicles(xPlayer.getIdentifier())
-
 	cb(vehicles)
+end)
+
+
+RegisterNetEvent('JAM_Garage:FinePlayer')
+AddEventHandler('JAM_Garage:FinePlayer', function(amount)
+	local xPlayer = ESX.GetPlayerFromId(source)
+	while not xPlayer do
+		xPlayer = ESX.GetPlayerFromId(source)
+		Citizen.Wait(0)
+	end
+
+	xPlayer.removeMoney(amount)
 end)
 
 RegisterNetEvent('JAM_Garage:ChangeState')
 AddEventHandler('JAM_Garage:ChangeState', function(plate, state)
 	local xPlayer = ESX.GetPlayerFromId(source)
-
-	if not xPlayer then return; end
+	while not xPlayer do
+		xPlayer = ESX.GetPlayerFromId(source)
+		Citizen.Wait(0)
+	end
 
 	local vehicles = JAM_Garage:GetPlayerVehicles(xPlayer.getIdentifier())
 	for key,val in pairs(vehicles) do
