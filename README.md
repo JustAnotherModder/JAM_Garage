@@ -23,3 +23,5 @@ If you havn't already, you need to follow the guide at https://docs.fivem.net/se
 ```
 start JAM_Garage
 ```
+
+- Modify `config.lua@3:DBName` to your database name (the same one that your server.cfg uses)
