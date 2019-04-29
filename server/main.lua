@@ -1,5 +1,3 @@
-JAM_Garage = {}
-
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)	
 
 function JAM_Garage:GetPlayerVehicles(identifier)	
@@ -76,21 +74,27 @@ AddEventHandler('JAM_Garage:ChangeState', function(plate, state)
 end)
 
 function JAM_Garage.Startup()
-	local dbconfig  =
-	{
-	  	{ ["@dbtable@"] = "owned_vehicles", ["@dbfield@"] = "jamstate", ["@dbfieldconf@"] = "int(11) NOT NULL DEFAULT 0", },
-	}
---
-	local query1 = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='@dbfield@' and TABLE_NAME='@dbtable@';"
-	local query2 = "ALTER TABLE `@dbtable@` ADD COLUMN `@dbfield@` @dbfieldconf@;"
+    local dbconfig  =
+    {
+      ["@dbname"]	= JAM_Garage.Config.DBName,
+      ["@dbtable@"] = "owned_vehicles",
+      ["@dbfield@"] = "jamstate",
+      ["@dbfieldconf@"] = "int(11) NOT NULL DEFAULT 0",
+    }
 
-	for _,c in pairs(dbconfig) do
-		  local curquery1 = query1
-		  local curquery2 = query2
-		  for repThis,repWith in pairs(c) do curquery1 = curquery1:gsub(repThis,repWith); curquery2 = curquery2:gsub(repThis,repWith); end;
-		  local data = MySQL.Sync.fetchAll( curquery1 )
-		  if #data == 0 then  MySQL.Sync.fetchAll( curquery2 );  end;
-	end
+    local query1 = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA ='@dbname' and COLUMN_NAME='@dbfield@' and TABLE_NAME='@dbtable@';"
+    local query2 = "ALTER TABLE `@dbtable@` ADD COLUMN `@dbfield@` @dbfieldconf@;"
+
+    local curquery1 = JAM_Garage.Replace(dbconfig,query1)
+    local curquery2 = JAM_Garage.Replace(dbconfig,query2)
+
+    local data = MySQL.Sync.fetchAll( curquery1 )
+    if #data == 0 then  MySQL.Sync.fetchAll( curquery2 );  end;
+end
+
+function JAM_Garage.Replace(c,q)
+    for repThis,repWith in pairs(type(c) == "table" and c or {}) do q = tostring(q):gsub(repThis,repWith); end;
+    return q
 end
 
 RegisterNetEvent('JAM_Garage:Startup')

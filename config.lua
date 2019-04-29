@@ -1,16 +1,17 @@
 JAM_Garage = {
 	Config = {	
+		DBName					= "",
 		MarkerDrawDistance 		= 100,
 		VehicleDespawnDistance 	= 500,
 
-		ImpoundCost 			= 500,
-		RepairCost		 		= 500,
+		ImpoundCost 			= 1000,
+		RepairCost		 		= 5000,
 
 		Blips = {
 			CityGarage = {
 				Zone = "Garage",
 				Sprite = 50,
-				Scale = 1.0,
+				Scale = 0.8,
 				Display = 4,
 				Color = 68,
 				Pos = { x = 227.50, y = -793.30, z = 30.60 },
@@ -18,7 +19,7 @@ JAM_Garage = {
 			VehicleStoreGarage = {
 				Zone = "Garage",
 				Sprite = 50,
-				Scale = 1.0,
+				Scale = 0.8,
 				Display = 4,
 				Color = 68,
 				Pos = { x = -66.54, y = -1165.96, z = 25.00 },
@@ -26,7 +27,7 @@ JAM_Garage = {
 			CityImpound = {
 				Zone = "Impound",
 				Sprite = 67,
-				Scale = 1.0,
+				Scale = 0.8,
 				Display = 4,
 				Color = 47,
 				Pos = { x = 491.90, y = -1315.00, z = 29.25 },
@@ -34,7 +35,7 @@ JAM_Garage = {
 			PaletoGarage = {
 				Zone = "Garage",
 				Sprite = 50,
-				Scale = 1.0,
+				Scale = 0.8,
 				Display = 4,
 				Color = 68,
 				Pos = { x = 105.35, y = 6613.58, z = 31.39 },
@@ -42,7 +43,7 @@ JAM_Garage = {
 			PaletoImpound = {
 				Zone = "Impound",
 				Sprite = 67,
-				Scale = 1.0,
+				Scale = 0.8,
 				Display = 4,
 				Color = 47,
 				Pos = { x = -458.17, y = 6024.81, z = 31.40 },
@@ -50,7 +51,7 @@ JAM_Garage = {
 			MedicalTowerGarage = {
 				Zone = "Garage",
 				Sprite = 50,
-				Scale = 1.0,
+				Scale = 0.8,
 				Display = 4,
 				Color = 68,
 				Pos = { x = -654.77, y = 310.27, z = 82.97 },
@@ -58,7 +59,7 @@ JAM_Garage = {
 			SandyShoresGarage = {
 				Zone = "Garage",
 				Sprite = 50,
-				Scale = 1.0,
+				Scale = 0.8,
 				Display = 4,
 				Color = 68,
 				Pos = { x = 1764.65, y = 3342.33, z = 45.00 },
@@ -66,7 +67,7 @@ JAM_Garage = {
 			SandyShoresImpound = {
 				Zone = "Impound",
 				Sprite = 67,
-				Scale = 1.0,
+				Scale = 0.8,
 				Display = 4,
 				Color = 47,
 				Pos = { x = 1736.71, y = 3689.35, z = 35.90 },

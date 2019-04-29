@@ -421,6 +421,7 @@ function JAM_Garage:Start()
         Citizen.Wait(0)
     end
 
+    Citizen.Wait(1000)
     TriggerServerEvent('JAM_Garage:Startup') 
 
     self:LoginCheck() 
