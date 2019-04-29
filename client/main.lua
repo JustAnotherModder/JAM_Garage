@@ -70,7 +70,7 @@ function JAM_Garage:CheckPosition()
         self.StandingInMarker = true
         self.ActionData = ActionData or {};
         self.ActionData.Action = self.CurrentGarage.Zone            
-        self.ActionData.Message = 'Press ~INPUT_PICKUP~ to open the ' .. (self.CurrentGarage.Zone:sub(1,1):lower()..self.CurrentGarage.Zone:sub(2)) .. '.'
+        self.ActionData.Message = 'Press ~INPUT_PICKUP~ to open the ~b~' .. (self.CurrentGarage.Zone:sub(1,1):lower()..self.CurrentGarage.Zone:sub(2)) .. '~s~.'
     end
 
     if not standingInMarker and self.StandingInMarker then
@@ -197,11 +197,11 @@ function JAM_Garage:OpenVehicleList(zone)
             local labelvehicle
 
             if val.state == 1 then
-                labelvehicle = vehiclePlate .. " : " .. vehicleName .. " : Garage"            
+                labelvehicle = '<span style="font-weight:bold;">' .. vehicleName .. '</span>' .. vehiclePlate .. '<span style="font-weight:bold;color:green;">Garage</span>'            
             elseif val.state == 2 then
-                labelvehicle = vehiclePlate .. " : " .. vehicleName .. " : Impound"      
+                labelvehicle = '<span style="font-weight:bold;">' .. vehicleName .. '</span>' .. vehiclePlate .. '<span style="font-weight:bold;color:orange;">Impound</span>'      
             else                
-                labelvehicle = vehiclePlate .. " : " .. vehicleName .. " : Unknown"      
+                labelvehicle = '<span style="font-weight:bold;">' .. vehicleName .. '</span>' .. vehiclePlate .. '<span style="font-weight:bold;color:red;">Unknown</span>'      
             end 
 
             table.insert(elements, {label =labelvehicle , value = val})            
@@ -221,7 +221,7 @@ function JAM_Garage:OpenVehicleList(zone)
                     menu.close()
                     JAM_Garage:SpawnVehicle(data.current.value.vehicle, zone)
                 else
-                    TriggerEvent('esx:showNotification', 'Your vehicle is not in the garage.')
+                    TriggerEvent('esx:showNotification', 'Your vehicle ~r~is not in the garage~s~.')
                 end
             end
 
@@ -231,11 +231,11 @@ function JAM_Garage:OpenVehicleList(zone)
                     if playerData.money >= self.Config.ImpoundCost then
                         JAM_Garage:SpawnVehicle(data.current.value.vehicle, zone)
                     else
-                        TriggerEvent('esx:showNotification', "You don't have enough money.")
+                        TriggerEvent('esx:showNotification', "You ~r~don't have enough money~s~.")
                     end
                     menu.close()
                 else
-                    TriggerEvent('esx:showNotification', 'Your vehicle is not impounded.')
+                    TriggerEvent('esx:showNotification', 'Your vehicle ~r~is not impounded~s~.')
                 end
             end            
             self:UnloadVehicles(vehicles)
@@ -341,9 +341,9 @@ function JAM_Garage:StoreVehicle(zone, price)
                     end
 
                     TriggerServerEvent('JAM_Garage:ChangeState', vehicleProps.plate, storage);
-                    TriggerEvent('esx:showNotification', 'Your vehicle has been stored.')
+                    TriggerEvent('esx:showNotification', 'Your vehicle ~g~has been stored~s~.')
                 else
-                    TriggerEvent('esx:showNotification', "You don't own this vehicle.")
+                    TriggerEvent('esx:showNotification', "~r~You don't own this vehicle~s~.")
                 end
             end, vehicleProps)
 
