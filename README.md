@@ -42,3 +42,6 @@ server_scripts {
 }
 ```
 
+### Notes
+- Any and all improvements must be send back to the author (me), here on github.
+
