@@ -117,7 +117,7 @@ function JAG:OpenGarageMenu(zone)
     if zone == 'Impound' and self.Config.ImpoundCost > 0 then str = zone .. ' - $' .. self.Config.ImpoundCost
     else
         if self.Config.RepairCost > 0 then
-            local playerPed = GetPlayerPed()
+            local playerPed = GetPlayerPed(PlayerId())
             
             local vehicle = GetLastDrivenVehicle(playerPed)   
             if vehicle then
@@ -300,7 +300,7 @@ end
 function JAG:StoreVehicle(zone, price)
     if not self or not self.CurrentGarage or not ESX or not self.ESX then return; end
 
-    local playerPed = GetPlayerPed()
+    local playerPed = GetPlayerPed(PlayerId())
     local vehicle = GetLastDrivenVehicle(playerPed)   
 
     if not vehicle then return; end
@@ -321,7 +321,7 @@ function JAG:StoreVehicle(zone, price)
     end
 
     while true do
-        if not IsPedInVehicle(GetPlayerPed(), vehicle, false) then
+        if not IsPedInVehicle(GetPlayerPed(PlayerId()), vehicle, false) then
             ESX.TriggerServerCallback('JAG:StoreVehicle', function(valid)
                 if(valid) then
                     DeleteVehicle(vehicle)
@@ -407,6 +407,11 @@ end
 -------------------------------------------
 
 function JAG:Start()
+    if not self then return; end
+    if not ESX then 
+        while not ESX do Citizen.Wait(100); end
+        self.ESX = ESX
+    end
     TriggerServerEvent('JAG:Startup') 
 
     self:LoginCheck() 
