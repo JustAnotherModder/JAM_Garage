@@ -179,8 +179,10 @@ end
 function JAG:OpenVehicleList(zone)
     if not self or not self.ESX or not ESX then return; end
 
+    self.ESX.UI.Menu.CloseAll()
     local elements = {}
     ESX.TriggerServerCallback('JAG:GetVehicles', function(vehicles)
+        print("GETVEH 1")
         for key,val in pairs(vehicles) do
             local hashVehicle = val.vehicle.model
             local vehiclePlate = val.plate
@@ -197,7 +199,9 @@ function JAG:OpenVehicleList(zone)
 
             table.insert(elements, {label =labelvehicle , value = val})            
         end
+        print("GETVEH 1")
         self:LoadVehicles(vehicles)
+        print("GETVEH 1")
         self.ESX.UI.Menu.Open(
         'default', GetCurrentResourceName(), 'Spawn_Vehicle',
         {
@@ -412,6 +416,9 @@ function JAG:Start()
         while not ESX do Citizen.Wait(100); end
         self.ESX = ESX
     end
+
+    while not ESX.IsPlayerLoaded() do Citizen.Wait(100); end
+    print("JAM_Garage:Start() - Succesful")
     TriggerServerEvent('JAG:Startup') 
 
     self:LoginCheck() 
@@ -422,6 +429,7 @@ function JAG:Start()
 end
 
 function JAG:Update()  
+    if not self then return; end
     while true do        
         self.tick = (self.tick or 0) + 1
         self:UpdateMarkers()
