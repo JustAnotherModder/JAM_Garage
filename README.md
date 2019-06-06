@@ -1,4 +1,7 @@
 # JAM_Garage 
+
+* [Discord](https://discord.gg/rBzBN4E)
+
 * Based off https://github.com/DanFrmSpace/esx_eden_garage
 
 JAM_Garage gives your players a location to store their vehicles, along with an impound for whatever reason you might need that for. If the player leaves their vehicle unattended (log off or move out of render distance), the vehicle will automatically be placed back in the garage (unless it is the vehicle currently in-use). Damaged vehicle storage price and impound retrieval price can be set in the config.
