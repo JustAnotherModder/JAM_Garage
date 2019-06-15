@@ -27,6 +27,7 @@ function JAG:SetBlips()
         SetBlipScale                (blip, val.Scale)
         SetBlipColour               (blip, val.Color)
         SetBlipAsShortRange         (blip, true)
+        SetBlipHighDetail           (blip, true)
         BeginTextCommandSetBlipName ("STRING")
         AddTextComponentString      (val.Zone)
         EndTextCommandSetBlipName   (blip)
@@ -182,7 +183,6 @@ function JAG:OpenVehicleList(zone)
     self.ESX.UI.Menu.CloseAll()
     local elements = {}
     ESX.TriggerServerCallback('JAG:GetVehicles', function(vehicles)
-        print("GETVEH 1")
         for key,val in pairs(vehicles) do
             local hashVehicle = val.vehicle.model
             local vehiclePlate = val.plate
@@ -197,11 +197,9 @@ function JAG:OpenVehicleList(zone)
                 labelvehicle = '<span style="font-weight:bold;">' .. vehicleName .. ' </span>: ' .. vehiclePlate .. ' : <span style="font-weight:bold;color:red;">Unknown</span>'      
             end 
 
-            table.insert(elements, {label =labelvehicle , value = val})            
+            table.insert(elements, {label =labelvehicle , value = val})                      
         end
-        print("GETVEH 1")
         self:LoadVehicles(vehicles)
-        print("GETVEH 1")
         self.ESX.UI.Menu.Open(
         'default', GetCurrentResourceName(), 'Spawn_Vehicle',
         {
@@ -418,7 +416,6 @@ function JAG:Start()
     end
 
     while not ESX.IsPlayerLoaded() do Citizen.Wait(100); end
-    print("JAM_Garage:Start() - Succesful")
     TriggerServerEvent('JAG:Startup') 
 
     self:LoginCheck() 

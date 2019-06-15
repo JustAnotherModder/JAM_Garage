@@ -4,7 +4,7 @@ function JAG:GetPlayerVehicles(identifier)
 	local playerVehicles = {}
 	local data = MySQL.Sync.fetchAll("SELECT * FROM owned_vehicles WHERE owner=@identifier",{['@identifier'] = identifier})	
 	for key,val in pairs(data) do
-		if val.job == nil then
+		if not val.job or val.job == nil then
 			local playerVehicle = json.decode(val.vehicle)
 			table.insert(playerVehicles, {owner = val.owner, veh = val.vehicle, vehicle = playerVehicle, plate = val.plate, state = val.jamstate})
 		end
