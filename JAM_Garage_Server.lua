@@ -1,93 +1,93 @@
 local JAG = JAM.Garage
 
-function JAG:GetPlayerVehicles(identifier)	
-	local playerVehicles = {}
-	local data = MySQL.Sync.fetchAll("SELECT * FROM owned_vehicles WHERE owner=@identifier",{['@identifier'] = identifier})	
-	for key,val in pairs(data) do
-		if not val.job or val.job == nil then
-			local playerVehicle = json.decode(val.vehicle)
-			table.insert(playerVehicles, {owner = val.owner, veh = val.vehicle, vehicle = playerVehicle, plate = val.plate, state = val.jamstate})
-		end
-	end
-	return playerVehicles
+function JAG:GetPlayerVehicles(identifier)  
+  local playerVehicles = {}
+  local data = MySQL.Sync.fetchAll("SELECT * FROM owned_vehicles WHERE owner=@identifier",{['@identifier'] = identifier}) 
+  for key,val in pairs(data) do
+    if (not val.job or val.job == nil) and (val.type and val.type == "car") then
+      local playerVehicle = json.decode(val.vehicle)
+      table.insert(playerVehicles, {owner = val.owner, veh = val.vehicle, vehicle = playerVehicle, plate = val.plate, state = val.jamstate})
+    end
+  end
+  return playerVehicles
 end
 
 ESX.RegisterServerCallback('JAG:StoreVehicle', function(source, cb, vehicleProps)
-	local isFound = false
-	local xPlayer = ESX.GetPlayerFromId(source)
-	while not xPlayer do
-		xPlayer = ESX.GetPlayerFromId(source)
-		Citizen.Wait(0)
-	end
+  local isFound = false
+  local xPlayer = ESX.GetPlayerFromId(source)
+  while not xPlayer do
+    xPlayer = ESX.GetPlayerFromId(source)
+    Citizen.Wait(0)
+  end
 
-	local playerVehicles = JAG:GetPlayerVehicles(xPlayer.getIdentifier())
-	local plate = vehicleProps.plate
+  local playerVehicles = JAG:GetPlayerVehicles(xPlayer.getIdentifier())
+  local plate = vehicleProps.plate
 
-	for key,val in pairs(playerVehicles) do
-		if(plate == val.plate) then
-			local vehProps = json.encode(vehicleProps)
-			MySQL.Sync.execute("UPDATE owned_vehicles SET vehicle=@vehProps WHERE plate=@plate",{['@vehProps'] = vehProps, ['@plate'] = val.plate})
-			isFound = true
-			break
-		end
-	end
-	cb(isFound)
+  for key,val in pairs(playerVehicles) do
+    if(plate == val.plate) then
+      local vehProps = json.encode(vehicleProps)
+      MySQL.Sync.execute("UPDATE owned_vehicles SET vehicle=@vehProps WHERE plate=@plate",{['@vehProps'] = vehProps, ['@plate'] = val.plate})
+      isFound = true
+      break
+    end
+  end
+  cb(isFound)
 end)
 
 ESX.RegisterServerCallback('JAG:GetVehicles', function(source, cb)
-	local xPlayer = ESX.GetPlayerFromId(source)
-	while not xPlayer do
-		xPlayer = ESX.GetPlayerFromId(source)
-		Citizen.Wait(0)
-	end
-	local vehicles = JAG:GetPlayerVehicles(xPlayer.getIdentifier())
-	cb(vehicles)
+  local xPlayer = ESX.GetPlayerFromId(source)
+  while not xPlayer do
+    xPlayer = ESX.GetPlayerFromId(source)
+    Citizen.Wait(0)
+  end
+  local vehicles = JAG:GetPlayerVehicles(xPlayer.getIdentifier())
+  cb(vehicles)
 end)
 
 
 RegisterNetEvent('JAG:FinePlayer')
 AddEventHandler('JAG:FinePlayer', function(amount)
-	local xPlayer = ESX.GetPlayerFromId(source)
-	while not xPlayer do
-		xPlayer = ESX.GetPlayerFromId(source)
-		Citizen.Wait(0)
-	end
+  local xPlayer = ESX.GetPlayerFromId(source)
+  while not xPlayer do
+    xPlayer = ESX.GetPlayerFromId(source)
+    Citizen.Wait(0)
+  end
 
-	xPlayer.removeMoney(amount)
+  xPlayer.removeMoney(amount)
 end)
 
 RegisterNetEvent('JAG:ChangeState')
 AddEventHandler('JAG:ChangeState', function(plate, state)
-	local xPlayer = ESX.GetPlayerFromId(source)
-	while not xPlayer do
-		xPlayer = ESX.GetPlayerFromId(source)
-		Citizen.Wait(0)
-	end
+  local xPlayer = ESX.GetPlayerFromId(source)
+  while not xPlayer do
+    xPlayer = ESX.GetPlayerFromId(source)
+    Citizen.Wait(0)
+  end
 
-	local vehicles = JAG:GetPlayerVehicles(xPlayer.getIdentifier())
-	for key,val in pairs(vehicles) do
-		if(plate == val.plate) then
-			MySQL.Sync.execute("UPDATE owned_vehicles SET jamstate=@state WHERE plate=@plate",{['@state'] = state , ['@plate'] = plate})
-			break
-		end		
-	end
+  local vehicles = JAG:GetPlayerVehicles(xPlayer.getIdentifier())
+  for key,val in pairs(vehicles) do
+    if(plate == val.plate) then
+      MySQL.Sync.execute("UPDATE owned_vehicles SET jamstate=@state WHERE plate=@plate",{['@state'] = state , ['@plate'] = plate})
+      break
+    end   
+  end
 end)
 
 function JAG.Startup()
-	while not JAM.SQLReady do 
-		Citizen.Wait(0)
-	end
+  while not JAM.SQLReady do 
+    Citizen.Wait(0)
+  end
 
-	local dbconvar = GetConvar('mysql_connection_string', 'Empty')
-	if dbconvar == "Empty" then print("JAG.Startup(): Error: local dbconvar is empty."); return; end
+  local dbconvar = GetConvar('mysql_connection_string', 'Empty')
+  if dbconvar == "Empty" then print("JAG.Startup(): Error: local dbconvar is empty."); return; end
 
-	local strStart,strEnd = string.find(dbconvar, "database=")
-	local dbStart,dbEnd = string.find(dbconvar,";",strEnd)
-	local dbName = string.sub(dbconvar, strEnd + 1, dbEnd - 1)	
+  local strStart,strEnd = string.find(dbconvar, "database=")
+  local dbStart,dbEnd = string.find(dbconvar,";",strEnd)
+  local dbName = string.sub(dbconvar, strEnd + 1, dbEnd - 1)  
 
     local dbconfig  =
     {
-      ["@dbname@"]	= dbName,
+      ["@dbname@"]  = dbName,
       ["@dbtable@"] = "owned_vehicles",
       ["@dbfield@"] = "jamstate",
       ["@dbfieldconf@"] = "int(11) NOT NULL DEFAULT 0",
