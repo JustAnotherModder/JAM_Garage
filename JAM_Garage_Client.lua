@@ -281,7 +281,7 @@ function JAG:SpawnVehicle(vehicle, zone)
         TaskWarpPedIntoVehicle(GetPlayerPed(-1), callback_vehicle, -1)
         table.insert(self.DrivenVehicles, {vehicle = callback_vehicle})
 
-        local vehicleId GetVehiclePedIsUsing(GetPlayerPed(-1))
+        local vehicleId = GetVehiclePedIsUsing(GetPlayerPed(-1))
         SetEntityAsMissionEntity(GetVehicleAttachedToEntity(vehicleId), true, true)
 
         local vehicleProps = self.ESX.Game.GetVehicleProperties(callback_vehicle)
